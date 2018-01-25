@@ -1,0 +1,5 @@
+/.vscode
+tasks.todo
+/node_modules
+.eslintrc
+yarn.lock

@@ -1,0 +1,25 @@
+{
+  "name": "talibriplus",
+  "version": "0.1.0",
+  "description": "A suite of tools for Talibri",
+  "main": "talibriplus.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zaalah",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb-base": "^12.1.0"
+  },
+  "devDependencies": {
+    "babel-preset-airbnb": "2.4.0",
+    "babel-tape-runner": "2.0.1",
+    "editorconfig-tools": "0.1.1",
+    "eslint-find-rules": "3.1.1",
+    "eslint-plugin-import": "2.7.0",
+    "in-publish": "2.0.0",
+    "safe-publish-latest": "1.1.1",
+    "tape": "4.8.0"
+  }
+}
