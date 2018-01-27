@@ -1,11 +1,16 @@
-/*
- * Talibri+
- * by Zaalah
- */
+// ==UserScript==
+// @name         Talibri+
+// @version      0.1.1
+// @description  Bonus functionality for Talibri
+// @author       
+// @grant        none
+// @match        http*://talibri.com/*
+// @namespace    https://talibri.com/
+// ==/UserScript==
 
-/* global $ localStorage window MutationObserver document Audio */
+/* global $ localStorage window MutationObserver document Audio selectOrderType selectOrderFilter */
 
-$(document).ready(() => {
+$(document).on('turbolinks:load', () => {
   /**
    * Initial setup with variables and the settings
    */
@@ -14,6 +19,7 @@ $(document).ready(() => {
 
   let game = {
     user: getUsername(),
+    lastAction: undefined,
     pref: {
       chatpings: true,
       sounds: true,
@@ -92,6 +98,56 @@ $(document).ready(() => {
 
     $('#talibriPlusModal').modal('hide')
   })
+
+  /**
+   * Market Tools
+   */
+  /* Add in 'Scrape' button only on the market page */
+  if (window.location.pathname === '/trade/1') {
+    $('span#your-leol').parent().parent().append('<button type="button" class="btn btn-primary pull-right" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Update Data</button>')
+  }
+
+  $('#tPlusScrape').click(() => {
+    const itemPages = ['material', 'raw-fish', 'food', 'herb', 'refined-material', 'ammunition', 'combat-potion', 'consumable-potion', 'finishing-material', 'gate']
+
+    selectOrderType('sell')
+    itemPages.forEach(checkPage)
+  })
+
+  let checkPage = (page) => {
+    const validPages = [
+      '/trade/1/get_listings?filter=material&order_type=sell',
+      '/trade/1/get_listings?filter=raw-fish&order_type=sell',
+      '/trade/1/get_listings?filter=food&order_type=sell',
+      '/trade/1/get_listings?filter=herb&order_type=sell',
+      '/trade/1/get_listings?filter=refined-material&order_type=sell',
+      '/trade/1/get_listings?filter=ammunition&order_type=sell',
+      '/trade/1/get_listings?filter=combat-potion&order_type=sell',
+      '/trade/1/get_listings?filter=consumable-potion&order_type=sell',
+      '/trade/1/get_listings?filter=finishing-material&order_type=sell',
+      '/trade/1/get_listings?filter=gate&order_type=sell',
+    ]
+
+    selectOrderFilter(page)
+
+    $(document).ajaxComplete((e, xhr, settings) => {
+      validPages.forEach((validPage) => {
+        if (settings.url === validPage) {
+          scrapeItems($('#inventory-table').find('tbody').find('tr').toArray())
+        }
+      })
+    })
+  }
+
+  const scrapeItems = (items) => {
+    items.forEach((i) => {
+      const id = $(i).attr('id').replace(/listing-/g, '')
+      const item = $(i).find('td.name').text()
+      const quantity = $(i).find($('td.quantity')).text().replace(/,/g, '')
+      const cost = $(i).find($('td.cost')).text()
+      const listing = [id, item, quantity, cost]
+    })
+  }
 
   /**
    * Utility functions to load, save, and start the script when loaded up
