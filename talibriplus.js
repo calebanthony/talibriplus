@@ -27,7 +27,7 @@ $(document).on('turbolinks:load', () => {
   }
 
   /* Set up the marketplace parent element for other utilities */
-  if (window.location.pathname === '/trade/1') {
+  if (window.location.pathname === '/trade/1' && !$('#tPlusMarketToolbar').length) {
     $('span#your-leol').parent().parent().after('<div class="panel-heading" id="tPlusMarketToolbar"></div>')
   }
 
@@ -63,8 +63,10 @@ $(document).on('turbolinks:load', () => {
   /**
    * Settings window to let the user change features
    */
-  $($('#bs-example-navbar-collapse-1 ul.navbar-nav.navbar-right li.dropdown ul.dropdown-menu').splice(-1)[0])
-    .append('<li class="text-center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#talibriPlusModal" id="talibriPlusSettings">Talibri+ Settings</button></li>')
+  if (!$('#tPlusSettings').length) {
+    $($('#bs-example-navbar-collapse-1 ul.navbar-nav.navbar-right li.dropdown ul.dropdown-menu').splice(-1)[0])
+      .append('<li id="tPlusSettings" class="text-center"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#talibriPlusModal" id="talibriPlusSettings">Talibri+ Settings</button></li>')
+  }
 
   let modal = ''
   modal += '<div class="modal fade" tabindex="-1" role="dialog" id="talibriPlusModal">'
@@ -108,7 +110,7 @@ $(document).on('turbolinks:load', () => {
    * Market Tools
    */
   /* Add in 'Scrape' button only on the market page */
-  // if (window.location.pathname === '/trade/1') {
+  // if (window.location.pathname === '/trade/1' && !$('#tPlusScrape').length) {
   //   $('#tPlusMarketToolbar').append('<button type="button" class="btn btn-primary" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Update Data</button>')
   // }
 
@@ -157,7 +159,7 @@ $(document).on('turbolinks:load', () => {
   /**
    * Market searchability
    */
-  if (window.location.pathname === '/trade/1') {
+  if (window.location.pathname === '/trade/1' && !$('#tPlusMarketSearch').length) {
     $('#tPlusMarketToolbar').append('<input id="tPlusMarketSearch" class="form-control pull-right" style="max-width:50%" placeholder="Filter Results">')
   }
 
