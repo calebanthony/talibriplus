@@ -26,6 +26,11 @@ $(document).on('turbolinks:load', () => {
     },
   }
 
+  /* Set up the marketplace parent element for other utilities */
+  if (window.location.pathname === '/trade/1') {
+    $('span#your-leol').parent().parent().after('<div class="panel-heading" id="tPlusMarketToolbar"></div>')
+  }
+
   /**
    * Chat features
    */
@@ -103,9 +108,9 @@ $(document).on('turbolinks:load', () => {
    * Market Tools
    */
   /* Add in 'Scrape' button only on the market page */
-  if (window.location.pathname === '/trade/1') {
-    $('span#your-leol').parent().parent().append('<button type="button" class="btn btn-primary pull-right" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Update Data</button>')
-  }
+  // if (window.location.pathname === '/trade/1') {
+  //   $('#tPlusMarketToolbar').append('<button type="button" class="btn btn-primary" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Update Data</button>')
+  // }
 
   $('#tPlusScrape').click(() => {
     const itemPages = ['material', 'raw-fish', 'food', 'herb', 'refined-material', 'ammunition', 'combat-potion', 'consumable-potion', 'finishing-material', 'gate']
@@ -148,6 +153,21 @@ $(document).on('turbolinks:load', () => {
       const listing = [id, item, quantity, cost]
     })
   }
+
+  /**
+   * Market searchability
+   */
+  if (window.location.pathname === '/trade/1') {
+    $('#tPlusMarketToolbar').append('<input id="tPlusMarketSearch" class="form-control pull-right" style="max-width:50%" placeholder="Filter Results">')
+  }
+
+  $('#tPlusMarketSearch').keyup(() => {
+    const allItems = $('#inventory-table tbody tr').toArray()
+    const searchTerm = $('#tPlusMarketSearch').val()
+    const searchItems = $(`#inventory-table tbody tr:contains(${searchTerm})`).toArray()
+    allItems.forEach((i) => { $(i).hide() })
+    searchItems.forEach((i) => { $(i).show() })
+  })
 
   /**
    * Utility functions to load, save, and start the script when loaded up
