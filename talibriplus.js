@@ -110,9 +110,9 @@ $(document).on('turbolinks:load', () => {
    * Market Tools
    */
   /* Add in 'Scrape' button only on the market page */
-  // if (window.location.pathname === '/trade/1' && !$('#tPlusScrape').length) {
-  //   $('#tPlusMarketToolbar').append('<button type="button" class="btn btn-primary" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Update Data</button>')
-  // }
+  if (window.location.pathname === '/trade/1' && !$('#tPlusScrape').length) {
+    $('#tPlusMarketToolbar').append('<button type="button" class="btn btn-primary disabled" id="tPlusScrape" style="margin-top:0; margin-right:5px;">Scrape</button>')
+  }
 
   $('#tPlusScrape').click(() => {
     const itemPages = ['material', 'raw-fish', 'food', 'herb', 'refined-material', 'ammunition', 'combat-potion', 'consumable-potion', 'finishing-material', 'gate']
